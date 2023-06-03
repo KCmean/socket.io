@@ -1,17 +1,32 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { useLocation } from 'react-router-dom';
 import queryString from 'query-string';
 import io from 'socket.io-client';
 
 
-const Chat = ( ) => {
+const Chat = () => {
   const location = useLocation();
+  const [name, setName] = useState("");
+  const [room, setRoom]  = useState("");
+  const ENDPOINT = 'localhost:5000';
+
   // console.log(location)
 
-  useEffect(() => {
-    const data = queryString.parse(location.search);
 
-    console.log(data);
+  useEffect(() => {
+    const { name, room } = queryString.parse(location.search);
+
+    // const socket = io(ENDPOINT);
+
+    const socket = io(ENDPOINT, {
+      transports: ['websocket', 'polling', 'flashsocket']
+    });
+
+    socket.on('fromServer', (data) => {
+      setName(name);
+      setRoom(room);
+    });
+    console.log(socket);
   })
   return (
     <div>Chat</div>
