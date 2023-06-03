@@ -12,7 +12,7 @@ const Join = () => {
 
 
   const toastOptions = {
-    position: "bottom-right",
+    position: "bottom-right", 
     autoClose: 8000,
     pauseOnHover: true,
     draggable: true,
