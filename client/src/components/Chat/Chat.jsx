@@ -18,14 +18,20 @@ const Chat = () => {
 
     // const socket = io(ENDPOINT);
 
+    // const socket = io(ENDPOINT, {
+    //   transports: ['websocket', 'polling', 'flashsocket']
+    // });
     const socket = io(ENDPOINT, {
-      transports: ['websocket', 'polling', 'flashsocket']
-    });
+      transports: ['websocket']
+    })
 
-    socket.on('fromServer', (data) => {
-      setName(name);
-      setRoom(room);
-    });
+    // socket.on('fromServer', (data) => {
+    //   setName(name);
+    //   setRoom(room);
+    // });
+    setName(name);
+    setRoom(room);
+
     console.log(socket);
   })
   return (
