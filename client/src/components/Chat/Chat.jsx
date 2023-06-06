@@ -23,7 +23,7 @@ const Chat = () => {
     // });
     const socket = io(ENDPOINT, {
       transports: ['websocket']
-    })
+    },  )
 
     // socket.on('fromServer', (data) => {
     //   setName(name);
@@ -32,8 +32,20 @@ const Chat = () => {
     setName(name);
     setRoom(room);
 
+    socket.emit('join', { name , room }, ({ error }) => {
+      alert(error); 
+    });
+
     console.log(socket);
-  })
+
+    return () => {
+      socket.emit('disconnect')
+
+        socket.off();
+    }
+  }, [ENDPOINT, location.search])
+
+
   return (
     <div>Chat</div>
   )
