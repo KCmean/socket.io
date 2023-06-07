@@ -10,21 +10,6 @@ const router = require('./router');
 
 const app = express();
 const server = http.createServer(app);
-// const io = socketio(server);
-// const io = require("socket.io")(server, { 
-//     cors: { 
-//       origin: "localhost:3000",
-//       credentials: true
-//     }
-//   });
-
-// const io = require("socket.io")(httpServer, {
-//     allowRequest: (req, callback) => {54n l;'
-
-//       const noOriginHeader = req.headers.origin === undefined;
-//       callback(null, noOriginHeader);
-//     }
-//   });
 
 const io = require("socket.io")(server, {
     cors: {
@@ -44,9 +29,21 @@ io.on('connection', (socket) => {
        return callback(error);
       }
 
-      socket.emit('message' , {user: 'admin' })
+      socket.emit('message' , {user: 'admin', text: `${user.name}, welcome to the room ${user.room}` });
+
+      socket.broadcast.to(user.room).emit('message', {user: 'admin', text: `${user.name}, has joined!`}); 
 
       socket.join(user.room);
+
+      callback();
+    });
+
+    socket.on('sendMessage', (message, callback) => {
+      const user = getUser(socket.id);
+
+      io.to(user.room).emit('message', {user:user.name, text: message});
+
+      callback();
     });
 
     socket.on('disconnect', () => {
